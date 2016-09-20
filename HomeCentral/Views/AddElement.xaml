@@ -1,0 +1,44 @@
+﻿<Page
+    x:Class="HomeCentral.Views.AddElement"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HomeCentral.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sip="using:OnScreenKeyboardSample"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Button Content="ROOM" HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Height="70" Width="150"
+                    FontSize="20" Background="Blue"
+                    Click="addRoom" Margin="200, 10"/>
+        <Button Content="DEVICE" Grid.Row="1" HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Height="70" Width="150"
+                    FontSize="20" Background="Blue"
+                    Click="addDevice" Margin="200, 10"/>
+
+        <StackPanel x:Name="contentRoom" Orientation="Horizontal" Height="30" Width="300" Visibility="Collapsed" Margin="200,0,200,200">
+            <TextBox x:Name="roomName" Background="White" GotFocus="ShowKeyboard" Width="200" Height="30" Text="{Binding ElementName=SIP_AddressBar, Path=OutputString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Width="30"/>
+            <Button Content="Save" Width="70" Click="SaveRoom"/>
+        </StackPanel>
+        <StackPanel x:Name="deviceDetails" Orientation="Vertical" Height="200" Width="300" Visibility="Collapsed" Margin="200,0,200,200">
+            <ListBox x:Name="listrooms" Height="40" Margin="5" SelectionChanged="listrooms_SelectionChanged" />
+            <TextBox x:Name="deviceName" Background="White" GotFocus="ShowKeyboard" Width="200" Height="30" Text="{Binding ElementName=SIP_AddressBar, Path=OutputString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock x:Name="deviceID"/>
+            <TextBlock Width="30"/>
+            <Button Content="Save" Width="70" Click="SaveDevice"/>
+        </StackPanel>
+        <StackPanel x:Name="contentDevice" Orientation="Vertical" Visibility="Collapsed" Margin="150,115,150,120">
+            <TextBlock x:Name="contentDeviceText" Text="List of devices not added"/>
+            <ListView x:Name="listDevices" Margin="5" Height="351" ItemsSource="{x:Bind ListSource}" ItemClick="listDevices_ItemClick" SelectionChanged="listDevices_SelectionChanged"/>
+        </StackPanel>
+        <StackPanel x:Name="OSK_StackPanel" HorizontalAlignment="Center" Height="244" Margin="0" VerticalAlignment="Bottom" Width="1346">
+            <sip:OnScreenKeyBoard x:Name="SIP_AddressBar" Margin="3,0" VerticalAlignment="Top" Height="244" Width="740" Visibility="Collapsed" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</Page>
