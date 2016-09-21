@@ -49,6 +49,9 @@ namespace HomeCentral.Views
             InitHouse();
             InitIoTHub();
 
+            //TESTES
+            App.ListSource.Add("99ASD9YU3HD8AHSF9AP6P7");
+
         }
 
         #region [ Inicializadores ]
@@ -159,6 +162,7 @@ namespace HomeCentral.Views
                 {
                     foreach (var Room in myHouse.Rooms)
                     {
+                        App._listRooms.Add(Room.Name);
                         foreach (var disp in Room.Devices)
                         {
                             if (disp.Id == c.Substring(0,2))

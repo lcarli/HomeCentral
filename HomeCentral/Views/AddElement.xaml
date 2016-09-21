@@ -26,16 +26,23 @@
             <TextBlock Width="30"/>
             <Button Content="Save" Width="70" Click="SaveRoom"/>
         </StackPanel>
-        <StackPanel x:Name="deviceDetails" Orientation="Vertical" Height="200" Width="300" Visibility="Collapsed" Margin="200,0,200,200">
-            <ListBox x:Name="listrooms" Height="40" Margin="5" SelectionChanged="listrooms_SelectionChanged" />
-            <TextBox x:Name="deviceName" Background="White" GotFocus="ShowKeyboard" Width="200" Height="30" Text="{Binding ElementName=SIP_AddressBar, Path=OutputString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock x:Name="deviceID"/>
-            <TextBlock Width="30"/>
-            <Button Content="Save" Width="70" Click="SaveDevice"/>
-        </StackPanel>
+        <Grid Height="200" Width="350" Margin="200,80,200,100">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ListBox x:Name="listrooms" Height="200" Margin="20,0,20,0" SelectionChanged="listrooms_SelectionChanged" ItemsSource="{x:Bind Rooms}" Grid.Column="1"/>
+            <StackPanel x:Name="deviceDetails" VerticalAlignment="Center" Orientation="Vertical" Visibility="Visible" Grid.Column="0">
+                <TextBlock Height="20"/>
+                <TextBox x:Name="deviceName" Background="White" GotFocus="ShowKeyboard" Height="40" Text="{Binding ElementName=SIP_AddressBar, Path=OutputString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Height="20"/>
+                <TextBlock x:Name="deviceID" Height="25" Foreground="White"/>
+                <Button Content="Save" Width="70" Click="SaveDevice"/>
+            </StackPanel>
+        </Grid>
         <StackPanel x:Name="contentDevice" Orientation="Vertical" Visibility="Collapsed" Margin="150,115,150,120">
             <TextBlock x:Name="contentDeviceText" Text="List of devices not added"/>
-            <ListView x:Name="listDevices" Margin="5" Height="351" ItemsSource="{x:Bind ListSource}" ItemClick="listDevices_ItemClick" SelectionChanged="listDevices_SelectionChanged"/>
+            <ListView x:Name="listDevices" Margin="5" Height="351" ItemsSource="{x:Bind ListSource}" ItemClick="listDevices_ItemClick" SelectionChanged="listDevices_SelectionChanged" IsItemClickEnabled="True"/>
         </StackPanel>
         <StackPanel x:Name="OSK_StackPanel" HorizontalAlignment="Center" Height="244" Margin="0" VerticalAlignment="Bottom" Width="1346">
             <sip:OnScreenKeyBoard x:Name="SIP_AddressBar" Margin="3,0" VerticalAlignment="Top" Height="244" Width="740" Visibility="Collapsed" HorizontalAlignment="Center"/>

@@ -17,6 +17,7 @@ namespace HomeCentral
     {
         public static ObservableCollection<string> ListSource;
         public static string deviceName = "HomeCentralRasp";
+        public static ObservableCollection<string> _listRooms;
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -26,6 +27,7 @@ namespace HomeCentral
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             ListSource = new ObservableCollection<string>();
+            _listRooms = new ObservableCollection<string>();
         }
 
         /// <summary>

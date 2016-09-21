@@ -37,6 +37,13 @@ namespace HomeCentral.Views
         private TouchPanels.TouchProcessor processor;
         private Point lastPosition = new Point(double.NaN, double.NaN);
         ObservableCollection<string> ListSource;
+        ObservableCollection<string> Rooms;
+
+        //Devices e Rooms
+        private string itemSelected;
+        private string selectedRoom;
+        private House h;
+        
 
         public AddElement()
         {
@@ -46,8 +53,15 @@ namespace HomeCentral.Views
              */
             SIP_AddressBar.RegisterEditControl(roomName);
             SIP_AddressBar.RegisterHost(this);
-
+            initHouse();
             ListSource = App.ListSource;
+            Rooms = App._listRooms;
+            listrooms.DataContext = this.DataContext;
+        }
+
+        private async void initHouse()
+        {
+            h = await House.LoadHome();
         }
 
         #region [Buttons AddRoom e AddDevice ]
@@ -69,10 +83,10 @@ namespace HomeCentral.Views
             ShowKeyboard(sender, e);
             if (roomName.Text.Length > 0)
             {
-                Library.Room room = new Library.Room();
+                Room room = new Library.Room();
                 room.Name = roomName.Text;
                 Home.myHouse.Rooms.Add(room);
-                Library.House.SaveHome(Home.myHouse);
+                House.SaveHome(Home.myHouse);
                 contentRoom.Visibility = Visibility.Collapsed;
             }
             else
@@ -88,9 +102,19 @@ namespace HomeCentral.Views
             ShowKeyboard(sender, e);
             if (deviceName.Text.Length > 0)
             {
-                Library.Device device = new Library.Device();
+                Device device = new Library.Device();
                 device.Name = deviceName.Text;
-                device.Id = deviceID.Text; 
+                device.Id = deviceID.Text;
+                selectedRoom = listrooms.SelectedItem.ToString();
+                foreach (Room r in h.Rooms)
+                {
+                    if (r.Name == selectedRoom)
+                    {
+                        r.Devices.Add(device);
+                        break;
+                    }
+                }
+                House.SaveHome(Home.myHouse);
                 deviceDetails.Visibility = Visibility.Collapsed;
             }
             else
@@ -278,6 +302,9 @@ namespace HomeCentral.Views
             //Deverá chamar a DeviceDetails para, de fato, adicionar o device
 
             //Detalhe: o ato de mudar a seleção está fazendo isso
+
+            itemSelected = e.ClickedItem.ToString();
+            deviceID.Text = itemSelected;
         }
 
         private void listrooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -285,15 +312,8 @@ namespace HomeCentral.Views
 
         }
 
-        private async void listDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void listDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            House h = await House.LoadHome();
-            List<string> l = new List<string>();
-            foreach (Room r in h.Rooms)
-            {
-                l.Add(r.Name);
-            }
-            listrooms.ItemsSource = l;
             contentDevice.Visibility = Visibility.Collapsed;
             deviceDetails.Visibility = Visibility.Visible;
         }
