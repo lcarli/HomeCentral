@@ -26,15 +26,17 @@
             <TextBlock Width="30"/>
             <Button Content="Save" Width="70" Click="SaveRoom"/>
         </StackPanel>
-        <Grid Height="200" Width="350" Margin="200,80,200,100">
+        <Grid Name="deviceDetails" Visibility="Collapsed" Height="200" Width="350" Margin="200,80,200,100">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <ListBox x:Name="listrooms" Height="200" Margin="20,0,20,0" SelectionChanged="listrooms_SelectionChanged" ItemsSource="{x:Bind Rooms}" Grid.Column="1"/>
-            <StackPanel x:Name="deviceDetails" VerticalAlignment="Center" Orientation="Vertical" Visibility="Visible" Grid.Column="0">
+            <StackPanel x:Name="deviceDetailstk" VerticalAlignment="Center" Orientation="Vertical" Grid.Column="0">
                 <TextBlock Height="20"/>
-                <TextBox x:Name="deviceName" Background="White" GotFocus="ShowKeyboard" Height="40" Text="{Binding ElementName=SIP_AddressBar, Path=OutputString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox x:Name="deviceName" Background="White" GotFocus="ShowKeyboard" Height="70" Text="{Binding ElementName=SIP_AddressBar, Path=OutputString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Header>Nome do Device</TextBox.Header>
+                </TextBox>
                 <TextBlock Height="20"/>
                 <TextBlock x:Name="deviceID" Height="25" Foreground="White"/>
                 <Button Content="Save" Width="70" Click="SaveDevice"/>

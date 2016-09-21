@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HomeCentral.Library;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +23,16 @@ namespace HomeCentral.Views
     /// </summary>
     public sealed partial class RoomDetails : Page
     {
+        private Room r;
+
         public RoomDetails()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            r = e.Parameter as Room;
         }
     }
 }

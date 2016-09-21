@@ -53,15 +53,10 @@ namespace HomeCentral.Views
              */
             SIP_AddressBar.RegisterEditControl(roomName);
             SIP_AddressBar.RegisterHost(this);
-            initHouse();
+            h = Home.myHouse;
             ListSource = App.ListSource;
             Rooms = App._listRooms;
             listrooms.DataContext = this.DataContext;
-        }
-
-        private async void initHouse()
-        {
-            h = await House.LoadHome();
         }
 
         #region [Buttons AddRoom e AddDevice ]

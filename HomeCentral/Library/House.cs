@@ -69,7 +69,7 @@ namespace HomeCentral.Library
 
             try
             {
-                _File = await _Folder.GetFileAsync("Home.bin");
+                _File = await _Folder.GetFileAsync("House.bin");
 
                 Stream stream = await _File.OpenStreamForReadAsync();
 
