@@ -98,7 +98,7 @@ namespace HomeCentral.Views
             {
                 Room room = new Library.Room();
                 room.Name = roomName.Text;
-                room.ImagePath = "ms-appx:///Assets/Icons/microchip.png";
+                room.ImagePath = ImagePathSelected;
                 Home.myHouse.Rooms.Add(room);
                 House.SaveHome(Home.myHouse);
                 contentRoom.Visibility = Visibility.Collapsed;
@@ -120,8 +120,9 @@ namespace HomeCentral.Views
                 Device device = new Library.Device();
                 device.Name = deviceName.Text;
                 device.Id = deviceID.Text.Remove(0,10);
-                device.ImagePath = ImagePathSelected;
+                device.ImagePath = "ms-appx:///Assets/Icons/microchip.png";
                 selectedRoom = listrooms.SelectedItem.ToString();
+                device.sensors = DeviceSensors;
                 foreach (Room r in h.Rooms)
                 {
                     if (r.Name == selectedRoom)
