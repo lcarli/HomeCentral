@@ -21,17 +21,49 @@
                     FontSize="20" Background="Blue"
                     Click="addDevice" Margin="200, 10"/>
 
-        <StackPanel x:Name="contentRoom" Orientation="Horizontal" Height="30" Width="300" Visibility="Collapsed" Margin="200,0,200,200">
-            <TextBox x:Name="roomName" Background="White" GotFocus="ShowKeyboard" Width="200" Height="30" Text="{Binding ElementName=SIP_AddressBar, Path=OutputString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock Width="30"/>
-            <Button Content="Save" Width="70" Click="SaveRoom"/>
+        <StackPanel x:Name="contentRoom" Orientation="Vertical" Height="30" Width="300" Visibility="Collapsed" Margin="200,0,200,200">
+            <StackPanel Orientation="Horizontal" Height="30" Width="300">
+                <TextBox x:Name="roomName" Background="White" GotFocus="ShowKeyboard" Width="200" Height="30" Text="{Binding ElementName=SIP_AddressBar, Path=OutputString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Width="30"/>
+                <Button Content="Save" Width="70" Click="SaveRoom"/>
+            </StackPanel>
+            <ListView Name="ListRoomIcons" Width="300" Height="150" IsItemClickEnabled="True" ItemClick="listIcons_ItemClick" HorizontalContentAlignment="Center">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Height="30" Width="30" Background="Black" Margin="10" CornerRadius="5" BorderBrush="DarkGray" BorderThickness="2">
+                            <Image Source="{Binding Path=ImagePath}" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackPanel>
-        <Grid Name="deviceDetails" Visibility="Collapsed" Height="200" Width="350" Margin="200,80,200,100">
+        <Grid Name="deviceDetails" Visibility="Visible" Height="200" Width="600" Margin="200,80,200,100">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ListBox x:Name="listrooms" Height="200" Margin="20,0,20,0" SelectionChanged="listrooms_SelectionChanged" ItemsSource="{x:Bind Rooms}" Grid.Column="1"/>
+            <ListBox x:Name="listrooms" Height="200" Margin="20,0,20,0" SelectionChanged="listrooms_SelectionChanged" ItemsSource="{x:Bind Rooms}" Grid.Column="2"/>
+            <ListView Name="listSensors" HorizontalContentAlignment="Center" Grid.Column="1">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Margin="2" Source="{Binding Path=ImagePath}" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock HorizontalAlignment="Center" Margin="2" Foreground="White" FontSize="12" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" Text="{Binding Path=Name}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             <StackPanel x:Name="deviceDetailstk" VerticalAlignment="Center" Orientation="Vertical" Grid.Column="0">
                 <TextBlock Height="20"/>
                 <TextBox x:Name="deviceName" Background="White" GotFocus="ShowKeyboard" Height="70" Text="{Binding ElementName=SIP_AddressBar, Path=OutputString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">

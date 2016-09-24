@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using HomeCentral.Controls;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace HomeCentral.Views
 {
@@ -50,7 +51,7 @@ namespace HomeCentral.Views
             InitIoTHub();
 
             //TESTES
-            App.ListSource.Add("99ASD9YU3HD8AHSF9AP6P7");
+            App.ListSource.Add("99;01;P6;Luz;P7;Tomada");
 
         }
 
@@ -62,42 +63,79 @@ namespace HomeCentral.Views
 
             if (myHouse.isFirstTime)
             {
+                //Adicionar Lista de Imagens de Sensores e Aposentos
+                App.sensors.Add("Luz", "ms-appx:///Assets/Icons/bright-lightbulb Branco.png");
+                App.sensors.Add("Tomada", "ms-appx:///Assets/Icons/electric-plug Branco.png");
+                App.sensors.Add("Porta", "ms-appx:///Assets/Icons/Door Branco.png");
+                App.sensors.Add("Computador", "ms-appx:///Assets/Icons/computer Branco.png");
+                App.sensors.Add("Umidade", "ms-appx:///Assets/Icons/Humidity Branco.png");
+                App.sensors.Add("Movimento", "ms-appx:///Assets/Icons/eye Branco.png");
+                App.sensors.Add("Biometria", "ms-appx:///Assets/Icons/fingerprint Branco.png");
+                App.sensors.Add("Fogo", "ms-appx:///Assets/Icons/fire Branco.png");
+                App.sensors.Add("VideoGame", "ms-appx:///Assets/Icons/gamepad-controller Branco.png");
+                App.sensors.Add("Telefone", "ms-appx:///Assets/Icons/old-typical-phone Branco.png");
+                App.sensors.Add("Temperatura", "ms-appx:///Assets/Icons/Temperature Branco.png");
+                App.sensors.Add("Ventilador", "ms-appx:///Assets/Icons/fan Branco.png");
+                App.sensors.Add("Chuva", "ms-appx:///Assets/Icons/umbrella Branco.png");
+
+                App.spaces.Add("Banheiro", "ms-appx:///Assets/Icons/toilet Branco.png");
+                App.spaces.Add("Cozinha", "ms-appx:///Assets/Icons/restaurant-eating-tools Branco.png");
+                App.spaces.Add("Suite Master", "ms-appx:///Assets/Icons/crown Branco.png");
+                App.spaces.Add("Área de Serviço", "ms-appx:///Assets/Icons/wiping-swipe-for-floors Branco.png");
+                App.spaces.Add("Sala de Jantar", "ms-appx:///Assets/Icons/table Branco.png");
+                App.spaces.Add("Sala de Estar", "ms-appx:///Assets/Icons/books-stack-of-three Branco.png");
+                App.spaces.Add("Quarto", "ms-appx:///Assets/Icons/bed Branco.png");
+                App.spaces.Add("Quarto Crianças", "ms-appx:///Assets/Icons/baby-crib-bedroom-furniture Branco.png");
+                App.spaces.Add("Varanda", "ms-appx:///Assets/Icons/Varanda Branco.png");
+                App.spaces.Add("Escritório", "ms-appx:///Assets/Icons/computer Branco.png");
+
+                //
+
                 myHouse.Rooms.Clear();
                 #region [ adicionando rooms na mao apenas a primeira vez]
                 Room r2 = new Room();
                 r2.Name = "Quarto Casal";
+                r2.ImagePath = App.spaces["Suite Master"];
                 myHouse.Rooms.Add(r2);
 
                 Room r3 = new Room();
                 r3.Name = "Quarto Crianças";
+                r3.ImagePath = App.spaces["Quarto Crianças"];
                 myHouse.Rooms.Add(r3);
 
                 Room r4 = new Room();
                 r4.Name = "Banheiro Casal";
+                r4.ImagePath = App.spaces["Banheiro"];
                 myHouse.Rooms.Add(r4);
 
                 Room r5 = new Room();
                 r5.Name = "Banheiro";
+                r5.ImagePath = App.spaces["Banheiro"];
                 myHouse.Rooms.Add(r5);
 
                 Room r6 = new Room();
                 r6.Name = "Cozinha";
+                r6.ImagePath = App.spaces["Cozinha"];
                 myHouse.Rooms.Add(r6);
 
                 Room r7 = new Room();
                 r7.Name = "Área de Serviço";
+                r7.ImagePath = App.spaces["Área de Serviço"];
                 myHouse.Rooms.Add(r7);
 
                 Room r8 = new Room();
                 r8.Name = "Sala de Jantar";
+                r8.ImagePath = App.spaces["Sala de Jantar"];
                 myHouse.Rooms.Add(r8);
 
                 Room r9 = new Room();
                 r9.Name = "Sala de Estar";
+                r9.ImagePath = App.spaces["Sala de Estar"];
                 myHouse.Rooms.Add(r9);
 
                 Room r10 = new Room();
                 r10.Name = "Escritório";
+                r10.ImagePath = App.spaces["Escritório"];
                 myHouse.Rooms.Add(r10);
 
                 myHouse.isFirstTime = false;
@@ -147,13 +185,13 @@ namespace HomeCentral.Views
             }
             char[] cArray = System.Text.Encoding.UTF8.GetString(ReadBuf, 0, 5).ToCharArray();  // Converte  Byte to Char
             String c = new String(cArray);
-            if (c.Substring(0,2) == "99")
+            if (c.Substring(0, 2) == "99")
             {
                 if (!App.ListSource.Contains(c))
                 {
                     App.ListSource.Add(c);
                 }
-                
+
             }
             // refresh the screen
             var task = this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -165,7 +203,7 @@ namespace HomeCentral.Views
                         App._listRooms.Add(Room.Name);
                         foreach (var disp in Room.Devices)
                         {
-                            if (disp.Id == c.Substring(0,2))
+                            if (disp.Id == c.Substring(0, 2))
                             {
                                 //atualizar o device.
                             }

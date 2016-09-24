@@ -33,6 +33,35 @@ namespace HomeCentral.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             r = e.Parameter as Room;
+            Title.Text = r.Name;
+            UpdateList();
+        }
+
+        private void UpdateList()
+        {
+            noneText.Visibility = Visibility.Collapsed;
+            foreach (var Room in Home.myHouse.Rooms)
+            {
+                if (Room.Name == r.Name)
+                {
+                    if (Room.Devices.Count() > 0)
+                    {
+                        foreach (var device in Room.Devices)
+                        {
+                            listDevices.Items.Add(device);
+                        }
+                    }
+                    else
+                    {
+                        noneText.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+        }
+
+        private void listDevices_ItemClick(object sender, ItemClickEventArgs e)
+        {
+
         }
     }
 }

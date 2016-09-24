@@ -7,13 +7,33 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
-        <RelativePanel Grid.Column="1" Background="Azure">
-            
-        </RelativePanel>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+          EntranceNavigationTransitionInfo.IsTargetElement="True">
+
+        <TextBlock x:Name="Title" Text="Home Central" HorizontalAlignment="Right"
+                   VerticalAlignment="Top" Margin="20"
+                   FontSize="40"/>
+        <ListView Name="listDevices" Margin="20, 100, 20, 20" Background="DarkTurquoise" IsItemClickEnabled="True" ItemClick="listDevices_ItemClick"  HorizontalContentAlignment="Center">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Height="120" Width="120" Background="Black" Margin="10" CornerRadius="5" BorderBrush="DarkGray" BorderThickness="2">
+                        <StackPanel Margin="2" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Margin="2,5" Source="{Binding Path=ImagePath}" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock HorizontalAlignment="Center" Margin="2,5" Foreground="White" FontSize="16" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" Text="{Binding Path=Name}"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <TextBlock x:Name="noneText" Text="Não há devices configurados."
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Foreground="Black" FontSize="30" Visibility="Collapsed"/>
+
     </Grid>
 </Page>

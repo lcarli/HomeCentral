@@ -17,6 +17,6 @@ namespace HomeCentral.Library
         public string Name { get; set; }
 
         //[DataMember]
-        //public string ImagePath { get; set; }
+        public string ImagePath { get; set; }
     }
 }

@@ -38,12 +38,13 @@ namespace HomeCentral.Views
         private Point lastPosition = new Point(double.NaN, double.NaN);
         ObservableCollection<string> ListSource;
         ObservableCollection<string> Rooms;
+        string ImagePathSelected;
 
         //Devices e Rooms
         private string itemSelected;
         private string selectedRoom;
         private House h;
-        
+
 
         public AddElement()
         {
@@ -57,6 +58,20 @@ namespace HomeCentral.Views
             ListSource = App.ListSource;
             Rooms = App._listRooms;
             listrooms.DataContext = this.DataContext;
+            FillListIcons();
+        }
+
+        private void FillListIcons()
+        {
+            foreach (var item in App.spaces)
+            {
+                ListRoomIcons.Items.Add(new IconsItem() { ImagePath = item.Value, Name = item.Key});
+            }
+
+            foreach (var item in App.sensors)
+            {
+                listSensors.Items.Add(new IconsItem() { ImagePath = item.Value, Name = item.Key});
+            }
         }
 
         #region [Buttons AddRoom e AddDevice ]
@@ -80,9 +95,11 @@ namespace HomeCentral.Views
             {
                 Room room = new Library.Room();
                 room.Name = roomName.Text;
+                room.ImagePath = ImagePathSelected;
                 Home.myHouse.Rooms.Add(room);
                 House.SaveHome(Home.myHouse);
                 contentRoom.Visibility = Visibility.Collapsed;
+                ImagePathSelected = "";
             }
             else
             {
@@ -100,6 +117,7 @@ namespace HomeCentral.Views
                 Device device = new Library.Device();
                 device.Name = deviceName.Text;
                 device.Id = deviceID.Text;
+                device.ImagePath = ImagePathSelected;
                 selectedRoom = listrooms.SelectedItem.ToString();
                 foreach (Room r in h.Rooms)
                 {
@@ -111,6 +129,7 @@ namespace HomeCentral.Views
                 }
                 House.SaveHome(Home.myHouse);
                 deviceDetails.Visibility = Visibility.Collapsed;
+                ImagePathSelected = "";
             }
             else
             {
@@ -293,13 +312,12 @@ namespace HomeCentral.Views
 
         private void listDevices_ItemClick(object sender, ItemClickEventArgs e)
         {
-            //Se achou um device novo e clicar nele....
-            //Deverá chamar a DeviceDetails para, de fato, adicionar o device
-
-            //Detalhe: o ato de mudar a seleção está fazendo isso
-
             itemSelected = e.ClickedItem.ToString();
-            deviceID.Text = itemSelected;
+
+            deviceID.Text = itemSelected.Split(';')[1]; //Get ID of the device. Always is the second one.
+
+            string[] sensors = itemSelected.Remove(0,6).Split(';');
+            //montar a lista de sensores baseado em casa porta que vem do Device. Como salvar isso no Objeto Device?
         }
 
         private void listrooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -311,6 +329,18 @@ namespace HomeCentral.Views
         {
             contentDevice.Visibility = Visibility.Collapsed;
             deviceDetails.Visibility = Visibility.Visible;
+        }
+
+        private void listIcons_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var s = e.ClickedItem as IconsItem;
+            ImagePathSelected = s.ImagePath;
+        }
+
+        private class IconsItem
+        {
+            public string ImagePath { get; set; }
+            public string Name { get; set; }
         }
     }
 }

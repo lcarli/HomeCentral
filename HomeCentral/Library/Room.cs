@@ -17,7 +17,7 @@ namespace HomeCentral.Library
         public string Name { get; set; }
 
         //[DataMember]
-        //public string ImagePath { get; set; }
+        public string ImagePath { get; set; }
 
         [DataMember]
         public List<Device> Devices;
@@ -27,10 +27,11 @@ namespace HomeCentral.Library
             Devices = new List<Device>();
         }
 
-        public void AddDevice(Device NewDevice, string name, string id)
+        public void AddDevice(Device NewDevice, string name, string id, string image)
         {
             NewDevice.Id = id;
             NewDevice.Name = name;
+            NewDevice.ImagePath = image;
             Devices.Add(NewDevice);
         }
         public void UpdateDevice(string oldName, string newName)
