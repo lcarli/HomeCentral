@@ -21,43 +21,41 @@ namespace HomeCentral.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class RoomDetails : Page
+    public sealed partial class DeviceDetails : Page
     {
-        private Room r;
+        private Device d;
 
-        public RoomDetails()
+        public DeviceDetails()
         {
             this.InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            r = e.Parameter as Room;
-            Title.Text = r.Name;
+            d = e.Parameter as Device;
+            Title.Text = d.Name;
             UpdateList();
         }
 
         private void UpdateList()
         {
             noneText.Visibility = Visibility.Collapsed;
-
-            if (r.Devices.Count() > 0)
+            if (d.sensors.Count() > 0)
             {
-                foreach (var device in r.Devices)
+                foreach (var sensor in d.sensors)
                 {
-                    listDevices.Items.Add(device);
+                    listSensors.Items.Add(sensor);
                 }
             }
             else
             {
                 noneText.Visibility = Visibility.Visible;
             }
-
         }
 
-        private void listDevices_ItemClick(object sender, ItemClickEventArgs e)
+        private void listSensors_ItemClick(object sender, ItemClickEventArgs e)
         {
-            this.Frame.Navigate(typeof(DeviceDetails), e.ClickedItem);
+
         }
     }
 }

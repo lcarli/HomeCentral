@@ -21,7 +21,7 @@
                     FontSize="20" Background="Blue"
                     Click="addDevice" Margin="200, 10"/>
 
-        <StackPanel x:Name="contentRoom" Orientation="Vertical" Height="30" Width="300" Visibility="Collapsed" Margin="200,0,200,200">
+        <StackPanel x:Name="contentRoom" Orientation="Vertical" Height="190" Width="300" Visibility="Collapsed" Margin="200,90,200,200">
             <StackPanel Orientation="Horizontal" Height="30" Width="300">
                 <TextBox x:Name="roomName" Background="White" GotFocus="ShowKeyboard" Width="200" Height="30" Text="{Binding ElementName=SIP_AddressBar, Path=OutputString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Width="30"/>
@@ -35,31 +35,29 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border Height="30" Width="30" Background="Black" Margin="10" CornerRadius="5" BorderBrush="DarkGray" BorderThickness="2">
-                            <Image Source="{Binding Path=ImagePath}" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
+                       <Image Source="{Binding Path=ImagePath}" Margin="5" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </StackPanel>
-        <Grid Name="deviceDetails" Visibility="Visible" Height="200" Width="600" Margin="200,80,200,100">
+        <Grid Name="deviceDetails" Visibility="Collapsed" Height="200" Width="600" Margin="50,80,50,100">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <ListBox x:Name="listrooms" Height="200" Margin="20,0,20,0" SelectionChanged="listrooms_SelectionChanged" ItemsSource="{x:Bind Rooms}" Grid.Column="2"/>
-            <ListView Name="listSensors" HorizontalContentAlignment="Center" Grid.Column="1">
+            <ListView Name="listSensors" HorizontalContentAlignment="Center" Grid.Column="1" HorizontalAlignment="Center">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal"/>
+                        <ItemsWrapGrid Orientation="Vertical"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Image Margin="2" Source="{Binding Path=ImagePath}" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <TextBlock HorizontalAlignment="Center" Margin="2" Foreground="White" FontSize="12" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" Text="{Binding Path=Name}"/>
+                            <TextBlock HorizontalAlignment="Center" Margin="2" Foreground="White" Width="50" FontSize="12" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" Text="{Binding Path=Name}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

@@ -45,6 +45,9 @@ namespace HomeCentral.Views
         private string selectedRoom;
         private House h;
 
+        //Sensors
+        private List<Sensor> DeviceSensors;
+
 
         public AddElement()
         {
@@ -55,6 +58,7 @@ namespace HomeCentral.Views
             SIP_AddressBar.RegisterEditControl(roomName);
             SIP_AddressBar.RegisterHost(this);
             h = Home.myHouse;
+            DeviceSensors = new List<Sensor>();
             ListSource = App.ListSource;
             Rooms = App._listRooms;
             listrooms.DataContext = this.DataContext;
@@ -67,23 +71,22 @@ namespace HomeCentral.Views
             {
                 ListRoomIcons.Items.Add(new IconsItem() { ImagePath = item.Value, Name = item.Key});
             }
-
-            foreach (var item in App.sensors)
-            {
-                listSensors.Items.Add(new IconsItem() { ImagePath = item.Value, Name = item.Key});
-            }
         }
 
         #region [Buttons AddRoom e AddDevice ]
         private void addRoom(object sender, RoutedEventArgs e)
         {
+            DeviceSensors.Clear();
             contentDevice.Visibility = Visibility.Collapsed;
             contentRoom.Visibility = Visibility.Visible;
+            deviceDetails.Visibility = Visibility.Collapsed;
         }
         private void addDevice(object sender, RoutedEventArgs e)
         {
+            DeviceSensors.Clear();
             contentDevice.Visibility = Visibility.Visible;
             contentRoom.Visibility = Visibility.Collapsed;
+            deviceDetails.Visibility = Visibility.Collapsed;
         }
         #endregion
 
@@ -95,7 +98,7 @@ namespace HomeCentral.Views
             {
                 Room room = new Library.Room();
                 room.Name = roomName.Text;
-                room.ImagePath = ImagePathSelected;
+                room.ImagePath = "ms-appx:///Assets/Icons/microchip.png";
                 Home.myHouse.Rooms.Add(room);
                 House.SaveHome(Home.myHouse);
                 contentRoom.Visibility = Visibility.Collapsed;
@@ -116,7 +119,7 @@ namespace HomeCentral.Views
             {
                 Device device = new Library.Device();
                 device.Name = deviceName.Text;
-                device.Id = deviceID.Text;
+                device.Id = deviceID.Text.Remove(0,10);
                 device.ImagePath = ImagePathSelected;
                 selectedRoom = listrooms.SelectedItem.ToString();
                 foreach (Room r in h.Rooms)
@@ -314,10 +317,25 @@ namespace HomeCentral.Views
         {
             itemSelected = e.ClickedItem.ToString();
 
-            deviceID.Text = itemSelected.Split(';')[1]; //Get ID of the device. Always is the second one.
+            deviceID.Text = "Device ID: " + itemSelected.Split(';')[1]; //Get ID of the device. Always is the second one.
 
             string[] sensors = itemSelected.Remove(0,6).Split(';');
-            //montar a lista de sensores baseado em casa porta que vem do Device. Como salvar isso no Objeto Device?
+            Sensor s;
+            for (int i = 0; i < sensors.Length; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    s = new Sensor();
+                    s.GPIO = sensors[i];
+                    s.Name = sensors[i+1];
+                    s.ImagePath = App.sensors[s.Name];
+                    DeviceSensors.Add(s);
+                }
+            }
+            foreach (var sensor in DeviceSensors)
+            {
+                listSensors.Items.Add(sensor);
+            }
         }
 
         private void listrooms_SelectionChanged(object sender, SelectionChangedEventArgs e)

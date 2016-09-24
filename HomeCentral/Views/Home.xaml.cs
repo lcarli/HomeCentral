@@ -51,7 +51,7 @@ namespace HomeCentral.Views
             InitIoTHub();
 
             //TESTES
-            App.ListSource.Add("99;01;P6;Luz;P7;Tomada");
+            App.ListSource.Add("99;01;06;Luz;07;Tomada");
 
         }
 
@@ -140,7 +140,7 @@ namespace HomeCentral.Views
 
                 myHouse.isFirstTime = false;
 
-                Library.House.SaveHome(myHouse);
+                House.SaveHome(myHouse);
                 #endregion
             }
             UpdateList();
@@ -187,7 +187,7 @@ namespace HomeCentral.Views
             String c = new String(cArray);
             if (c.Substring(0, 2) == "99")
             {
-                if (!App.ListSource.Contains(c))
+                if (!App.ListSource.Contains(c.Substring(0,3).Replace(";","")))
                 {
                     App.ListSource.Add(c);
                 }

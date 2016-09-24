@@ -119,6 +119,7 @@
       <DependentUpon>MasterPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Library\Room.cs" />
+    <Compile Include="Library\Sensor.cs" />
     <Compile Include="NavMenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\AddElement.xaml.cs">
@@ -126,6 +127,9 @@
     </Compile>
     <Compile Include="Views\BackupManual.xaml.cs">
       <DependentUpon>BackupManual.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DeviceDetails.xaml.cs">
+      <DependentUpon>DeviceDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
@@ -239,6 +243,7 @@
     <Content Include="Assets\Icons\Humidity Preto.png" />
     <Content Include="Assets\Icons\Humidity Verde.png" />
     <Content Include="Assets\Icons\Humidity Vermelho.png" />
+    <Content Include="Assets\Icons\microchip.png" />
     <Content Include="Assets\Icons\old-handphone Azul.png" />
     <Content Include="Assets\Icons\old-handphone Branco.png" />
     <Content Include="Assets\Icons\old-handphone Preto.png" />
@@ -345,6 +350,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BackupManual.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DeviceDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

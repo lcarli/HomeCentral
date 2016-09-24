@@ -7,19 +7,15 @@ using System.Threading.Tasks;
 
 namespace HomeCentral.Library
 {
-    [DataContract]
-    public class Device
+    public class Sensor
     {
-        [DataMember]
-        public string Id { get; set; }
-
         [DataMember]
         public string Name { get; set; }
 
         [DataMember]
-        public string ImagePath { get; set; }
+        public string GPIO { get; set; }
 
         [DataMember]
-        public List<Sensor> sensors { get; set; }
+        public string  ImagePath { get; set; }
     }
 }
