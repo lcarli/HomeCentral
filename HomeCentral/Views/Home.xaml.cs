@@ -33,9 +33,11 @@ namespace HomeCentral.Views
         //variaveis I2C 
         private static I2cDevice Device;
         private Timer periodicTimer;
+        private static bool AlreadyRunning = false;
 
         //variaveis gerais
         public static House myHouse;
+
 
         //IoTHub
         static string deviceKey;
@@ -49,6 +51,19 @@ namespace HomeCentral.Views
             InitTouch();
             InitHouse();
             InitIoTHub();
+
+            Task.Factory.StartNew(async () =>
+            {
+                while (true)
+                {
+                    if (AlreadyRunning == false)
+                    {
+                        AlreadyRunning = true;
+                        updateSensors();
+                        await Task.Delay(300000);
+                    }
+                }
+            });
 
             //TESTES
             App.ListSource.Add("99;01;06;Luz;07;Tomada");
@@ -171,23 +186,36 @@ namespace HomeCentral.Views
         }
         #endregion
 
+
+        /// <summary>
+        /// É necessário fazer testes. O tamanho do buffer é de 6 chars padrão para chamada entre central e device:
+        /// ID do device (Ex: 01)
+        /// Porta do device (Ex: 12)
+        /// Comando Liga/Desliga/Ler (Ex: 01)
+        /// Codigo completo de 6 chars => 011201
+        ///  ->->->->->->->->->-> COMO vai ficar quando receber o device pela primeira vez? Não tem quantidade de caracteres!!
+        ///  EX: 99;01;06;Luz;07;Tomada
+        /// </summary>
+        /// <param name="state"></param>
+        #region [ READING DATA ]
         private void TimerCallback(object state)
         {
             byte[] RegAddrBuf = new byte[] { 0x40 };
-            byte[] ReadBuf = new byte[5];
+            byte[] ReadBuf = new byte[6];
             try
             {
                 Device.Read(ReadBuf); // read the data
             }
             catch (Exception f)
             {
+                //LOG ERROR
                 //f.message
             }
-            char[] cArray = System.Text.Encoding.UTF8.GetString(ReadBuf, 0, 5).ToCharArray();  // Converte  Byte to Char
+            char[] cArray = System.Text.Encoding.UTF8.GetString(ReadBuf, 0, 6).ToCharArray();  // Converte  Byte to Char
             String c = new String(cArray);
             if (c.Substring(0, 2) == "99")
             {
-                if (!App.ListSource.Contains(c.Substring(0,3).Replace(";","")))
+                if (!App.ListSource.Contains(c.Substring(0, 3).Replace(";", "")))
                 {
                     App.ListSource.Add(c);
                 }
@@ -200,7 +228,6 @@ namespace HomeCentral.Views
                 {
                     foreach (var Room in myHouse.Rooms)
                     {
-                        App._listRooms.Add(Room.Name);
                         foreach (var disp in Room.Devices)
                         {
                             if (disp.Id == c.Substring(0, 2))
@@ -212,7 +239,9 @@ namespace HomeCentral.Views
                 }
             });
         }
+        #endregion
 
+        #region [ SEND DATA ]
         public static void sendI2C(string data)
         {
             byte[] buff = GetBytes(data);
@@ -228,6 +257,7 @@ namespace HomeCentral.Views
             }
             return bytes;
         }
+        #endregion
 
         #region [ DEVICE TOUCH ]
         private async void InitTouch()
@@ -384,13 +414,16 @@ namespace HomeCentral.Views
 
         #endregion
 
+        #region [ METHODS ]
         private void UpdateList()
         {
+            App._listRooms.Clear();
             noneText.Visibility = Visibility.Collapsed;
             if (myHouse.Rooms.Count > 0)
             {
                 foreach (var Room in myHouse.Rooms)
                 {
+                    App._listRooms.Add(Room.Name);
                     listRooms.Items.Add(Room);
                 }
             }
@@ -405,5 +438,21 @@ namespace HomeCentral.Views
             //navegar para detalhes do Room passando o room selecionado
             this.Frame.Navigate(typeof(RoomDetails), e.ClickedItem);
         }
+
+        public async void updateSensors()
+        {
+            foreach (var room in myHouse.Rooms)
+            {
+                if (room.Devices.Count() > 0)
+                {
+                    foreach (var device in room.Devices)
+                    {
+                        sendI2C(device.Id+"status");
+                    }
+                }
+            }
+            AlreadyRunning = false;
+        }
+        #endregion
     }
 }
